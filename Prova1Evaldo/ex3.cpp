@@ -70,5 +70,5 @@ int main()
             break;
         }
 
-    } while (true);
+    } while (1);
 }
