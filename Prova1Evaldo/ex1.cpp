@@ -8,26 +8,26 @@ Além disso, exiba uma mensagem para o usuário indicando se a nota foi aceita o
 
 using namespace std;
 
-bool ValidarNota(float nota)
+bool validarnota(float nota)
 {
-    return (nota >= 0 && nota <= 10);
+    return(nota >= 0 && nota <= 10);
 }
 
 int main()
 {
     float nota;
+
     do
     {
-        cout << "Me informe sua nota, por favor: ";
+        cout << "De o valor da nota: ";
         cin >> nota;
-        if (!ValidarNota(nota))
+        if (!validarnota(nota))
         {
-            cout << "\n Sua nota nao foi aceita. Tente novamente \n";
+            cout << "nota invalida, tente novamente";
         }
 
-    } while (!ValidarNota(nota));
-    
-    cout << "Nota aceita: " << nota << endl;
+    } while (!validarnota(nota));
 
+    cout << "Nota valida, sua nota:" << nota << endl;
     return 0;
 }
