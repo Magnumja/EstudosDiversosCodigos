@@ -4,53 +4,55 @@
 
 using namespace std;
 
-int main()
-{
-    // criar ou abrir arquivo para escrita
-    ofstream arquivoSaida("arq.txt"); //cria ou abre o arquivo para a escrita
+int main(){
+    ofstream arquivoSaida("arq.txt");
 
-    if (!arquivoSaida) {
-        cout << "Erro ao abrir o arquivo para escrita!";
+    if (!arquivoSaida)
+    {
+        cout << "Erro ao abrir o arquivo" << endl;
         return 1;
     }
 
     char caractere;
-    cout << "Digite caracteres para salvar no aquivo(gitite 0 para poder parar): " << endl;
+    cout << "Digite caracteres para salvar no arquivo(digite 0 para parar)";
 
     while (1)
     {
-       cin >> caractere;
-       if (caractere == '0')
-       {
-        break;
-       }
+        cin >> caractere;
 
-       arquivoSaida << caractere;
-       
+        if (caractere == '0')
+        {
+            break;
+        }
+
+        arquivoSaida << caractere;
+        
     }
 
+
     arquivoSaida.close();
+
 
     ifstream arquivoEntrada("arq.txt");
 
     if (!arquivoEntrada)
     {
-        cout << "Erro ao abrir aquivo para leitura";
+        cout << "Erro ao tentar ler o arquivo" << endl;
         return 1;
     }
 
-    cout << "\nConteudo do arquivo salvo foi: " << endl;
+    cout << "\nOs cacteres salvos sao: ";
 
     while (arquivoEntrada.get(caractere))
     {
-       cout << caractere;
+        cout << caractere;
     }
+
 
     arquivoEntrada.close();
 
     return 0;
+
     
-    
-    
-    
+
 }
