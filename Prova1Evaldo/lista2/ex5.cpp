@@ -7,6 +7,8 @@ Mostre na tela quantas vezes aquele caractere ocorre dentro do arquivo.*/
 
 using namespace std;
 
+
+
 int main(){
     string NomeArquivo;
     cout << "Digite o nome do arquivo que deseja ler: ";
@@ -21,8 +23,25 @@ int main(){
         return 1;
     }
 
-    char caractere;
+    char caractereQueDeseja;
+    int cont = 0;
 
     cout << "Digite o caractere que deseja saber quantas vezes aparece no arquivo: ";
+    cin >> caractereQueDeseja;
+
+    char CaractereLido;
+
+    while (arquivo.get(CaractereLido))
+    {
+        if (caractereQueDeseja == CaractereLido)
+        {
+            cont++;
+        }
+    }
+
+    cout << "A quantidade de vezes que o caractere " << caractereQueDeseja << " apareceu foi de " << cont << " vezes." << endl;
+
+    return 0;
+    
     
 }
