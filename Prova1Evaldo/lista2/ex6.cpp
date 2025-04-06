@@ -31,11 +31,12 @@ int main(){
            {
              CaractereLido = CaractereLido + 32;
            }
+           int indice = CaractereLido - 'a';
+           contagem[indice]++;
            
         }
         
-        int indice = CaractereLido - 'a';
-        contagem[indice]++;
+       
     }
     
 
