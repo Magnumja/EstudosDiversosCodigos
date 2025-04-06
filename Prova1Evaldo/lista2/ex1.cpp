@@ -12,48 +12,47 @@ caracteres armazenados.*/
 using namespace std;
 
 int main() {
-    // Passo 1: Criar/abrir o arquivo para escrita
-    ofstream arquivoSaida("arq.txt"); // Cria ou abre o arquivo para escrita
-
-    if (!arquivoSaida) { // Verifica se o arquivo foi aberto com sucesso
+    
+    ofstream arquivoSaida("arq.txt"); 
+    if (!arquivoSaida) { 
         cout << "Erro ao abrir o arquivo para escrita!" << endl;
-        return 1; // Encerra o programa com erro
+        return 1; 
     }
 
-    // Passo 2: Receber caracteres do usuário até que ele digite '0'
+    
     char caractere;
     cout << "Digite caracteres para salvar no arquivo (digite '0' para parar):" << endl;
 
     while (true) {
-        cin >> caractere; // Lê um caractere do usuário
+        cin >> caractere; 
 
-        if (caractere == '0') { // Se o caractere for '0', sai do loop
+        if (caractere == '0') { 
             break;
         }
 
-        arquivoSaida << caractere; // Escreve o caractere no arquivo
+        arquivoSaida << caractere; 
     }
 
-    // Passo 3: Fechar o arquivo após a escrita
+    
     arquivoSaida.close();
 
-    // Passo 4: Abrir o arquivo novamente para leitura
-    ifstream arquivoEntrada("arq.txt"); // Abre o arquivo para leitura
+    
+    ifstream arquivoEntrada("arq.txt"); 
 
-    if (!arquivoEntrada) { // Verifica se o arquivo foi aberto corretamente
+    if (!arquivoEntrada) { 
         cout << "Erro ao abrir o arquivo para leitura!" << endl;
-        return 1; // Encerra o programa com erro
+        return 1; 
     }
 
-    // Passo 5: Ler e exibir os caracteres do arquivo na tela
+    
     cout << "\nConteúdo do arquivo:" << endl;
     
-    while (arquivoEntrada.get(caractere)) { // Lê um caractere por vez
-        cout << caractere; // Exibe o caractere na tela
+    while (arquivoEntrada.get(caractere)) { 
+        cout << caractere; 
     }
 
-    // Fechar o arquivo após a leitura
+  
     arquivoEntrada.close();
 
-    return 0; // Encerra o programa com sucesso
+    return 0; 
 }
