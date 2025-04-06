@@ -1,6 +1,24 @@
 {
     "files.associations": {
         "*.embeddedhtml": "html",
-        "iostream": "cpp"
-    }
+        "iostream": "cpp",
+        "fstream": "cpp",
+        "string": "cpp"
+    },
+    "cSpell.words": [
+        "aquele",
+        "arquivo",
+        "caractere",
+        "dentro",
+        "Faça",
+        "Mostre",
+        "ocorre",
+        "programa",
+        "quantas",
+        "receba",
+        "tela",
+        "texto",
+        "usuário",
+        "vezes"
+    ]
 }
