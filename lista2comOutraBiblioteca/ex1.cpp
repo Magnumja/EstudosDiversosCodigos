@@ -23,7 +23,7 @@ cout << "Digite os caracteres(ditite 0 para parar): \n";
 
 while (1)
 {
-    cin >> caractere;
+    caractere = _getch(); //le caractere sem precisar apertar Enter
     if (caractere == '0') break;
     
     fputc(caractere, arquivo); //escreve o caractere no arquivo
