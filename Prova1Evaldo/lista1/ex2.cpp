@@ -1,35 +1,29 @@
-/*Crie um programa que contenha uma sub-rotina para validar a entrada de caracteres.
-Somente as letras “A”, “a”, “P” ou “p” são permitidas.
-Caso o usuário informe um caractere diferente, a função deve retornar falso e solicitar uma nova entrada.
-Informe ao usuário se o caractere foi aceito ou não.*/
-
 #include <iostream>
 
 using namespace std;
 
-bool ValidarCaractere(char carac)
-{
-    return (carac == 'A', carac == 'a', carac = 'P', carac == 'p');
+bool ValidarLetra(char caractere){
+    return(caractere == 'A' || caractere == 'a' || caractere == 'P' || caractere == 'p');
 }
-
-int main()
-{
-    char carac;
-
+int main(){
+    char caractere;
     do
     {
-        cout << "\n Me fale o caractere desejado (A,a,P,p):  ";
-        cin >> carac;
+        cout << "Me informe o caractere que deseja para validacao:";
+        cout << "\n Obs: o caractere deve ser P,p,A,a!";
+        cout << "\n digite: ";
 
-        if (!ValidarCaractere(carac))
+        cin >> caractere;
+
+        if (ValidarLetra(caractere))
         {
-            cout << "\n Caractere invalido, tente novamente! ";
+            cout << "Caractere aceito! Muito obrigado. " << endl;
+        } else
+        {
+            cout << "Caractere Invalido! Tente novamente! \n";
         }
         
-    } while (!ValidarCaractere(carac));
-
-    cout << "Caractere aceito: " << carac << endl;
-
-    return 0;
+    } while (!ValidarLetra(caractere));
     
+    return 0;
 }

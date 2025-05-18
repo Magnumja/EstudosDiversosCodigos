@@ -1,74 +1,49 @@
-/*Faça um programa que tenha uma sub-rotina que receba dois números inteiros.
-A sub-rotina deve calcular e exibir a soma dos dois números, além da subtração e da divisão do maior pelo menor.
-Certifique-se de que os números informados não sejam iguais.*/
-
 #include <iostream>
 
 using namespace std;
 
-bool verificarnumero(int num1, int num2)
+bool validarNumero(float num1, float num2)
 {
     return (num1 != num2);
 }
 
 int main()
 {
-    int num1, num2, soma, subtracao, divisao;
-    int escolha;
+    float num1, num2, div, sub, soma;
 
     do
     {
-        cout << "Qual os numeros escolhidos?  \n";
+        cout << "Me fale os dois numeros que deseja saber a soma, subtracao e divisao: ";
         cin >> num1 >> num2;
+        cout << "\n";
 
-        if (!verificarnumero(num1, num2))
+        if (validarNumero(num1, num2))
         {
-            cout << "Numeros invalidos, nao podem ser iguais! \n";
-            continue;
-        }
-
-        cout << "\nO que voce deseja fazer?\n";
-        cout << "1- Soma\n";
-        cout << "2- Subtracao\n";
-        cout << "3- divisao\n";
-        cout << "4- Sair\n";
-
-        cin >> escolha;
-        system("cls");
-
-        switch (escolha)
-        {
-        case 1:
-
             soma = num1 + num2;
-            cout << "A soma vale: " << soma << endl;
-
-            break;
-
-        case 2:
-
-            subtracao = abs(num1 - num2);
-            cout << "A subtracao vale: " << subtracao << endl;
-            break;
-
-            break;
-
-        case 3:
-
-            divisao = float (num1 / num2);
-            cout << "A divisao vale: " << divisao << endl;
-            break;
-
-        case 4:
-            cout << "Foi um prazer te servir!";
-            return 0;
-
-            break;
-        default:
-            cout << "Opcao invalida, tente novamente!" << endl;
-
-            break;
+            sub = num1 - num2;
+            if (num1 == 0 || num2 == 0)
+            {
+                cout << "A divisao por zero nao eh permitida pois nao existe \n";
+                cout << "O valor da soma e " << soma << " e o valor da subtracao e " << sub << endl;
+            }
+            else if (num1 > num2)
+            {
+                div = num1 / num2;
+                cout << "O valor da divisao e " << div;
+                cout << "O valor da soma e " << soma << " e o valor da subtracao e " << sub << endl;
+            }
+            else
+            {
+                div = num2 / num1;
+                cout << "O valor da divisao e " << div;
+                cout << "O valor da soma e " << soma << " e o valor da subtracao e " << sub << endl;
+            }
+        }
+        else
+        {
+            cout << "Num 1 e num 2 nao podem ser iguais, tente novamente! \n";
         }
 
-    } while (1);
+    } while (!validarNumero(num1, num2));
+    return 0;
 }
