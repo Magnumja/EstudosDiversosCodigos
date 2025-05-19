@@ -3,7 +3,8 @@
         "*.embeddedhtml": "html",
         "iostream": "cpp",
         "fstream": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "ostream": "cpp"
     },
     "cSpell.words": [
         "abra",

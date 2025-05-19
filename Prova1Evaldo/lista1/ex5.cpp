@@ -7,60 +7,44 @@ Se for “P”, retorne a média ponderada considerando os pesos 2, 3 e 4 para a
 
 using namespace std;
 
-void SeForA(float n1, float n2, float n3, float &MediaAritmetica)
+void notas(int n1, int n2, int n3, char caractere)
 {
-    MediaAritmetica = (n1 + n2 + n3) / 3;
+    if (caractere == 'A')
+    {
+        int mediaA = (n1 + n2 + n3) / 3;
+        cout << "O valor da media aritmetica foi de " << mediaA << endl;
+    }
+    if (caractere == 'P')
+    {
+        float mediaP = (2 * n1 + 3 * n2 + 4 * n3) / 9;
+        cout << "O resultado da media ponderada foi de " << mediaP << endl;
+    }
 }
-
-void SeForP(float n1, float n2, float n3, float &MediaPonderada)
+bool verificarCaractere(char caractere)
 {
-    MediaPonderada = (2 * n1 + 3 * n2 + 4 * n3) / 9;
+    return (caractere == 'A' || caractere == 'P');
 }
-
-bool ValidarCaractere(char carac)
-{
-    return (carac != 'A' && carac != 'P' && carac != 'S');
-}
-
 int main()
 {
-    char carac;
-    float n1, n2, n3, MediaAritmetica, MediaPonderada;
-
-    cout << "Digite as 3 notas e depois escolha o que deseja: ";
+    int n1, n2, n3;
+    char caractere;
+    cout << "Poderia dizer a nota 1, 2 e 3 respectivamente: ";
     cin >> n1 >> n2 >> n3;
+    cout << "\n";
 
     do
     {
-        cout << "\nA - Media aritmetica\n";
-        cout << "P - Media ponderada\n";
-        cout << "S - Sair\n";
-        cout << "Digite: ";
-        cin >> carac;
+        cout << "Poderia agora me informar seu caractere, P para media ponderada e A para media aritmetica: ";
+        cin >> caractere;
 
-        if (ValidarCaractere(carac))
+        if (!verificarCaractere(caractere))
         {
-            cout << "Caractere Invalido, tente novamente";
-            continue;
+            cout << "Erro tente novamente! \n";
         }
-        
 
-        if (carac == 'A')
-        {
-            SeForA(n1, n2, n3, MediaAritmetica);
-            cout << "Media Aritmetica: " << MediaAritmetica << endl;
-        }
-        else if (carac == 'P')
-        {
-            SeForP(n1, n2, n3, MediaPonderada);
-            cout << "Media ponderada: " << MediaPonderada << endl;
-        }
-        else if (carac == 'S')
-        {
-            cout << "Foi um prazer te servir!";
-            break;
-        }
-        
+    } while (!verificarCaractere(caractere));
 
-    } while (ValidarCaractere(carac));
+    notas(n1, n2, n3, caractere);
+
+    return 0;
 }
