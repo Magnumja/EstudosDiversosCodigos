@@ -1,41 +1,28 @@
-/*Crie um programa que tenha uma função para calcular a idade de uma pessoa em dias.
-O usuário deve informar a idade em anos, meses e dias, e a função deve retornar o total correspondente em dias.*/
-
 #include <iostream>
 
 using namespace std;
 
-bool SeAnoBisex(int anos, int &div, int &diasBisex, int &diasNormais, int &anosBisex, int &anosNormais, int &quantidadeTotal)
+int verificacaoNaoPrimo(int num, int div1, int div2)
 {
-
-    div = anos / 4;
-    anosBisex = div;
-    diasBisex = anosBisex * 366;
-
-    anosNormais = anos - anosBisex;
-    diasNormais = anosNormais * 365;
-
-    quantidadeTotal = diasBisex + diasNormais;
-
-    return true;
+    return (num != 1 && (div1 == 0 || div2 == 0));
 }
-
 int main()
 {
-    int meses, anos, dias, div;
-    int anosNormais, diasNormais, anosBisex, diasBisex, quantidadeTotal = 0;
+    int num;
+    int div1, div2;
+    cout << "Me diga o numero que deseja saber se e primo ou nao: ";
+    cin >> num;
 
-    cout << "Me informe sua idade em anos, meses e dias: ";
-    cin >> anos >> meses >> dias;
+    div1 = num % 2;
+    div2 = num % 3;
 
-    if (SeAnoBisex(anos, div, diasBisex, diasNormais, anosBisex, anosNormais, quantidadeTotal))
+    if (verificacaoNaoPrimo(num, div1, div2))
     {
-        quantidadeTotal += (meses * 30) + dias;
-        cout << "Voce tem " << quantidadeTotal << " dias de vida." << endl;
+        cout << "O " << num << " nao e primo";
     }
     else
     {
-        cout << "Erro!" << endl;
+        cout << "E primo";
     }
 
     return 0;

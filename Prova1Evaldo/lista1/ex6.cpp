@@ -16,7 +16,7 @@ void notas(int n1, int n2, int n3, char caractere)
     }
     if (caractere == 'P')
     {
-        float mediaP = (2 * n1 + 3 * n2 + 4 * n3) / 9;
+        float mediaP = (2 * n1 + 3 * n2 + 4 * n3) / 9.0;
         cout << "O resultado da media ponderada foi de " << mediaP << endl;
     }
 }
@@ -38,12 +38,12 @@ int main()
         cout << "Poderia dizer a nota 1, 2 e 3 respectivamente: ";
         cin >> n1 >> n2 >> n3;
 
-        if (!verificarNota(n1,n2,n3))
+        if (!verificarNota(n1, n2, n3))
         {
             cout << "Erro tente novamente! \n";
         }
 
-    } while (!verificarNota(n1,n2,n3));
+    } while (!verificarNota(n1, n2, n3));
     cout << "\n";
 
     do
