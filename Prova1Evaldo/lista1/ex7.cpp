@@ -2,27 +2,45 @@
 
 using namespace std;
 
-int verificacaoNaoPrimo(int num, int div1, int div2)
+bool verificacaoPrimo(int num)
 {
-    return (num != 1 && (div1 == 0 || div2 == 0));
+    if (num <=1)
+    {
+        return 0;
+    }
+    if (num == 2 || num == 3)
+    {
+        return 1;
+    }
+    
+    
+    for (int i = 2; i < num; i++)
+    {
+
+        if (num%i == 0)
+        {
+            return 0;
+        }
+        
+    }
+
+    return 1;
+    
+    
 }
 int main()
 {
     int num;
-    int div1, div2;
     cout << "Me diga o numero que deseja saber se e primo ou nao: ";
     cin >> num;
 
-    div1 = num % 2;
-    div2 = num % 3;
-
-    if (verificacaoNaoPrimo(num, div1, div2))
+    if (!verificacaoPrimo(num))
     {
-        cout << "O " << num << " nao e primo";
+        cout << "O " << num << " nao e primo" << endl;
     }
     else
     {
-        cout << "E primo";
+        cout << "E primo" << endl;
     }
 
     return 0;
