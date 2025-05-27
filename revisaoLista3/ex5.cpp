@@ -10,7 +10,7 @@ using namespace std;
 string inverter(string texto, int i){
     if (i < 0)
     {
-        return ""; // Corrigido: return de string, não 0
+        return ""; 
     }
     else
     {
@@ -25,7 +25,21 @@ int main(){
     cout << "Me fale uma string e eu te darei o contrario dela: ";
     cin >> texto;
 
-    cout << "String invertida: " << inverter(texto, texto.length() - 1) << endl;
+    string resultado = inverter(texto, texto.length() - 1);
+
+    cout << "String invertida: " << resultado << endl;
+
+
+    if (texto == resultado)
+    {
+        cout << texto << " é um palindromo! " << endl;
+    }
+    else
+    {
+        cout << texto << " nao é um palindromo!" << endl;
+    }
+    
+    
 
     return 0;
 }
