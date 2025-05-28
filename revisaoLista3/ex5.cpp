@@ -30,16 +30,6 @@ int main(){
     cout << "String invertida: " << resultado << endl;
 
 
-    if (texto == resultado)
-    {
-        cout << texto << " é um palindromo! " << endl;
-    }
-    else
-    {
-        cout << texto << " nao é um palindromo!" << endl;
-    }
-    
-    
 
     return 0;
 }
