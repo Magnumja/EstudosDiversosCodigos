@@ -8,8 +8,10 @@ c) Calcule a média dos dados armazenado*/
 using namespace std;
 
 int main()
+
 {
-    int vetor[5];
+    // criar por alocacao dinamica
+    int vetor[5] = new int;
     int *p = vetor; 
     int soma = 0;
 
@@ -29,6 +31,8 @@ int main()
 
     float media = soma / 5.0;
     cout << "\nA media dos valores do vetor vale: " << media << endl;
+
+    delete[];
 
     return 0;
 }
