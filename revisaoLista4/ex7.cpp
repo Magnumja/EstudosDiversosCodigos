@@ -34,7 +34,7 @@ void visualizacao(Informacoes* p){
     cout << "Nome: " << p->nome;
     cout << "\nIdade: " << p->idade;
     cout << "\nAltura: " << p->altura;
-    cout << "Peso: " << p->peso;
+    cout << "\nPeso: " << p->peso;
 
 }
 
