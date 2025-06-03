@@ -23,6 +23,7 @@ int main(){
     for (int i = 0; i < 3; i++)
     {
         cout << "Digite o nome do " << (i+1) << " aluno: ";
+        cin.ignore();
         getline(cin,(p+i)->nome);
 
         cout << "Digite a idade dele: ";
