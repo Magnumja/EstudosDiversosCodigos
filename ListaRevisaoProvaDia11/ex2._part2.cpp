@@ -60,7 +60,7 @@ void Selection(int vet[], int tamanho)
         bool troca;
         troca = false;
 
-        for (int k = i + 1; k < tamanho - 1; k++)
+        for (int k = i + 1; k < tamanho; k++)
         {
              if (vet[k] < menor)
             {
