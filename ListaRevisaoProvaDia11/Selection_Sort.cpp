@@ -18,15 +18,15 @@ int main()
 
     system("cls"); 
 
-    // Algoritmo de ordenação por seleção (Selection Sort)
-    for (int j = 0; j < 9; j++) // percorre até o penúltimo elemento, pois o ultimo ja esta no lugar certo
+    
+    for (int j = 0; j < 9; j++) 
     {
-        menor = Notas[j]; // assume que o menor está na posição atual
+        menor = Notas[j]; 
         posicao = j;
         troca = false;
 
-        for (int k = j + 1; k < 10; k++) // procura um valor menor nos elementos seguintes, que ao final ele vai achar
-        {                                // o valor definitivo de menor por agora, fazendo com que ele vai para o if de troca
+        for (int k = j + 1; k < 10; k++) 
+        {                                
             if (Notas[k] < menor)
             {
                 menor = Notas[k];
@@ -35,7 +35,7 @@ int main()
             }
         }
 
-        if (troca) // se achou um valor menor, faz a troca
+        if (troca) 
         {
             aux = Notas[j];
             Notas[j] = menor;
