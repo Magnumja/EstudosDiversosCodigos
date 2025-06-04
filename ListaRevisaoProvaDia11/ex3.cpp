@@ -42,7 +42,7 @@ int main()
     {
         for (int k =i+1; k < 10; k++)
         {
-            if (x[k] > x[i])
+            if (x[k] < x[i])
             {
                 int aux = x[k];
                 x[k] = x[i];

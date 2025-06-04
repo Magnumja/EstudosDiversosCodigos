@@ -16,23 +16,25 @@ devem ser passados como parâmetros a variável vetor e o seu tamanho.
 #include <iostream>
 #include <time.h>
 using namespace std;
+        
 
 void Insercao(int vet[], int tamanho)
 {
-    for (int i = 0; i < tamanho - 1; i++)
+    int x, j;
+
+    for (int i = 0; i < tamanho -1; i++)
     {
-        for (int k = i + 1; k > 0; k--)
+        x = vet[i + 1];
+        j = i;
+        while (x < vet[j] && j >=0)
         {
-            if (vet[i] > vet[k])
-            {
-                int aux = vet[i];
-                vet[i] = vet[k];
-                vet[k] = aux;
-            }
-            else
-                break;
+            vet[j+1] = vet[j];
+            j--;
         }
+        vet[j + 1] = x;
+
     }
+    
 }
 
 void Bubble(int vet[], int tamanho)
