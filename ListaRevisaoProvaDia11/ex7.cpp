@@ -61,7 +61,9 @@ void Exibir(Prato p[], int tamanho)
 {
     for (int i = 0; i < tamanho; i++)
     {
-        cout << i + 1 << " prato tem nome " << p[i].nome << " com descricao ' " << p[i].descricao << " ' preco " << p[i].preco << " com uma quantidade de vemdas de " << p[i].quantidade_vendas;
+        cout << i + 1 << " prato tem nome " << p[i].nome << " com descricao ' "
+             << p[i].descricao << " ' preco " << p[i].preco << " com uma quantidade de vendas de "
+             << p[i].quantidade_vendas;
         cout << "\n";
     }
 }
