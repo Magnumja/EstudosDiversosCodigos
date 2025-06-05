@@ -18,7 +18,6 @@ struct Aluno{
 int main(){
     
     Aluno* p;
-
     p = (Aluno*)malloc(3*sizeof(Aluno));
 
     
