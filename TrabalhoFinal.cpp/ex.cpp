@@ -247,6 +247,7 @@ int main() {
                 break;
             default:
                 cout << "Opcao invalida!\n";
+                
                 break;
         }
     } while (op != 6);
