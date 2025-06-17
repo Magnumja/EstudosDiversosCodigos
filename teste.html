@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Padrões de Projeto</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light blue-gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .quiz-container {
+            background-color: #ffffff;
+            border-radius: 1rem; /* Rounded corners */
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 100%;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .question-text {
+            font-size: 1.25rem; /* Large text for questions */
+            font-weight: 600;
+            color: #1a202c; /* Dark text */
+            margin-bottom: 1rem;
+        }
+        .option-button {
+            display: block;
+            width: 100%;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.75rem;
+            background-color: #edf2f7; /* Light gray */
+            border: 1px solid #e2e8f0; /* Lighter border */
+            border-radius: 0.5rem; /* Slightly rounded */
+            text-align: left;
+            font-size: 1rem;
+            color: #2d3748; /* Medium dark text */
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .option-button:hover:not(.selected):not(.correct):not(.incorrect) {
+            background-color: #e2e8f0; /* Darker on hover */
+            border-color: #cbd5e0;
+        }
+        .option-button.selected {
+            background-color: #3182ce; /* Blue for selected */
+            color: #ffffff;
+            border-color: #2b6cb0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .option-button.correct {
+            background-color: #48bb78; /* Green for correct */
+            color: #ffffff;
+            border-color: #38a169;
+        }
+        .option-button.incorrect {
+            background-color: #f56565; /* Red for incorrect */
+            color: #ffffff;
+            border-color: #e53e3e;
+        }
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+        .nav-button {
+            padding: 0.75rem 1.5rem;
+            background-color: #4299e1; /* Blue */
+            color: #ffffff;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .nav-button:hover:not(:disabled) {
+            background-color: #3182ce; /* Darker blue on hover */
+        }
+        .nav-button:disabled {
+            background-color: #cbd5e0; /* Gray when disabled */
+            cursor: not-allowed;
+        }
+        .quiz-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+            color: #4a5568;
+        }
+        .score-display {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #2b6cb0;
+        }
+        .result-screen {
+            text-align: center;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+        .result-screen h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+        .result-screen p {
+            font-size: 1.5rem;
+            color: #4a5568;
+            margin-bottom: 1.5rem;
+        }
+        .restart-button {
+            padding: 0.75rem 2rem;
+            background-color: #4299e1;
+            color: #ffffff;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .restart-button:hover {
+            background-color: #3182ce;
+        }
+        .justification-text {
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background-color: #e0f2f7; /* Light blue */
+            border-left: 5px solid #3182ce; /* Blue border */
+            border-radius: 0.5rem;
+            color: #2d3748;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            display: none; /* Hidden by default */
+        }
+        @media (max-width: 640px) {
+            .quiz-container {
+                padding: 1rem;
+            }
+            .question-text {
+                font-size: 1.1rem;
+            }
+            .option-button {
+                font-size: 0.95rem;
+                padding: 0.6rem 0.8rem;
+            }
+            .nav-button {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            .result-screen h2 {
+                font-size: 1.5rem;
+            }
+            .result-screen p {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-app" class="quiz-container">
+        <div class="progress-bar-container w-full bg-gray-200 rounded-full h-2.5 mb-4">
+            <div id="progress-bar" class="bg-blue-500 h-2.5 rounded-full" style="width: 0%;"></div>
+        </div>
+        <div id="question-area">
+            <p id="question-number" class="text-gray-500 text-sm mb-2">Questão 1 de 30</p>
+            <p id="question-text" class="question-text"></p>
+            <div id="options-container" class="flex flex-col gap-3">
+                <!-- Opções serão carregadas aqui pelo JS -->
+            </div>
+            <div id="justification" class="justification-text">
+                <!-- Justificativa será carregada aqui pelo JS -->
+            </div>
+            <div class="navigation-buttons">
+                <button id="prev-button" class="nav-button" disabled>Anterior</button>
+                <button id="next-button" class="nav-button">Próximo</button>
+            </div>
+        </div>
+        <div id="result-area" class="result-screen hidden">
+            <h2>Resultados do Quiz!</h2>
+            <p id="final-score">Você acertou 0 de 30 questões.</p>
+            <button id="restart-button" class="restart-button">Refazer Quiz</button>
+        </div>
+        <div class="quiz-footer">
+            <span id="current-score" class="score-display">Pontuação: 0</span>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Qual padrão de criação garante que uma classe tenha apenas uma instância e provê um ponto de acesso global a ela, sendo frequentemente criticado por dificultar testes?",
+                options: [
+                    "Factory Method",
+                    "Singleton",
+                    "Builder",
+                    "Abstract Factory"
+                ],
+                correctAnswer: 1,
+                justification: "O padrão Singleton garante que uma classe tenha apenas uma instância e oferece um ponto de acesso global. Embora útil em alguns casos, é criticado por introduzir acoplamento forte e dificultar o teste unitário, pois a instância global não pode ser facilmente substituída por mocks."
+            },
+            {
+                question: "Um sistema precisa construir representações complexas de objetos (ex: diferentes tipos de relatórios) que compartilham um processo de construção similar, mas cujas representações finais podem variar drasticamente. Qual padrão de criação é mais adequado para separar a construção da representação?",
+                options: [
+                    "Factory Method",
+                    "Prototype",
+                    "Builder",
+                    "Abstract Factory"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Builder é ideal para construir objetos complexos passo a passo, permitindo que o mesmo processo de construção crie diferentes representações do objeto. Ele separa o algoritmo de construção da representação final, o que é perfeito para cenários como a criação de relatórios com diversas formatações ou conteúdos."
+            },
+            {
+                question: "Em um sistema que lida com múltiplas plataformas (ex: Windows, macOS) e precisa criar famílias de objetos relacionados (ex: botões, caixas de texto que são específicos de cada plataforma), qual padrão de criação você utilizaria para fornecer uma interface para criar essas famílias de objetos sem especificar suas classes concretas?",
+                options: [
+                    "Factory Method",
+                    "Singleton",
+                    "Abstract Factory",
+                    "Prototype"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Abstract Factory provê uma interface para criar famílias de objetos relacionados ou dependentes sem especificar suas classes concretas. É perfeito para cenários como toolkits de interface gráfica multiplataforma, onde você precisa criar um conjunto coordenado de componentes (botões, janelas) que pertencem à mesma 'família' (estilo ou plataforma)."
+            },
+            {
+                question: "Um framework precisa que subclasses decidam qual classe concreta instanciar, permitindo que a criação de objetos seja delegada para a hierarquia de classes. Qual padrão de criação é o mais apropriado para este cenário?",
+                options: [
+                    "Builder",
+                    "Prototype",
+                    "Factory Method",
+                    "Abstract Factory"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Factory Method define uma interface para criar um objeto, mas delega a decisão da classe a ser instanciada para as subclasses. Isso permite que uma classe cliente utilize uma interface comum para criar objetos, enquanto as subclasses determinam qual implementação específica será instanciada."
+            },
+            {
+                question: "Quando um sistema precisa criar novos objetos a partir da cópia de um protótipo existente, especialmente se o custo de criação é alto ou se as classes são ocultas (sem construtores públicos), qual padrão de criação é mais indicado?",
+                options: [
+                    "Singleton",
+                    "Factory Method",
+                    "Prototype",
+                    "Builder"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Prototype especifica a criação de objetos copiando um protótipo existente. É particularmente útil quando o custo de criar uma nova instância é mais alto do que clonar uma existente, ou quando se deseja criar objetos sem depender de suas classes concretas, apenas de uma interface de clonagem."
+            },
+            {
+                question: "Um componente legado possui uma interface incompatível com o restante do sistema. Para permitir que o componente legado seja usado sem alterar seu código-fonte, qual padrão estrutural pode converter a interface do componente para a interface esperada pelos clientes?",
+                options: [
+                    "Facade",
+                    "Proxy",
+                    "Adapter",
+                    "Composite"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Adapter (também conhecido como Wrapper) converte a interface de uma classe em outra interface que os clientes esperam. Ele permite que classes com interfaces incompatíveis trabalhem juntas, sem que seja necessário modificar o código original da classe incompatível."
+            },
+            {
+                question: "Para simplificar a interface de um subsistema complexo, que consiste em várias classes e interações intrincadas, qual padrão estrutural oferece uma interface única e simplificada para esse subsistema, tornando-o mais fácil de usar?",
+                options: [
+                    "Adapter",
+                    "Decorator",
+                    "Facade",
+                    "Bridge"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Facade provê uma interface unificada e de alto nível para um conjunto de interfaces em um subsistema. Ele esconde a complexidade do subsistema, tornando-o mais fácil de usar para os clientes, mas não impede que os clientes acessem as classes do subsistema diretamente, se necessário."
+            },
+            {
+                question: "Um sistema de arquivos precisa tratar arquivos individuais e pastas (que contêm arquivos e/ou outras pastas) de forma uniforme. Qual padrão estrutural permite compor objetos em estruturas de árvore para representar hierarquias todo-parte, tratando objetos individuais e composições uniformemente?",
+                options: [
+                    "Proxy",
+                    "Flyweight",
+                    "Composite",
+                    "Bridge"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Composite compõe objetos em estruturas de árvore para representar hierarquias todo-parte. Ele permite que os clientes tratem objetos individuais (folhas) e composições de objetos (nós) de forma uniforme, simplificando o código cliente que interage com a hierarquia."
+            },
+            {
+                question: "Em um aplicativo de edição de documentos, o objeto 'Documento' pode precisar de um controle de acesso, carregamento sob demanda (lazy loading) ou registro de operações antes de realmente interagir com o sistema de arquivos. Qual padrão estrutural provê um substituto ou ponto de controle de acesso a outro objeto?",
+                options: [
+                    "Adapter",
+                    "Facade",
+                    "Proxy",
+                    "Flyweight"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Proxy provê um substituto ou ponto de controle de acesso para outro objeto. Ele pode ser usado para adicionar funcionalidades como controle de acesso, lazy loading, logging, ou cache antes de delegar a chamada ao objeto real. A intenção é controlar o acesso ao objeto alvo, não simplificá-lo ou convertê-lo."
+            },
+            {
+                question: "Um editor de texto precisa representar milhões de caracteres, mas deseja otimizar o uso de memória. Qual padrão estrutural usa o compartilhamento para suportar grandes quantidades de objetos 'refinados' (como caracteres formatados) de forma eficiente, armazenando o estado intrínseco de forma compartilhada e o estado extrínseco separadamente?",
+                options: [
+                    "Composite",
+                    "Proxy",
+                    "Flyweight",
+                    "Decorator"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Flyweight é usado para minimizar o uso de memória ou o custo computacional, compartilhando o máximo possível de objetos com estados idênticos. É ideal para sistemas que precisam criar um grande número de objetos similares (como caracteres em um editor de texto, onde 'a' pode ser o mesmo objeto Flyweight em várias posições, mas sua posição e cor são estados extrínsecos)."
+            },
+            {
+                question: "Um framework de interface gráfica permite que desenvolvedores usem diferentes 'aparências' (ex: tema claro, tema escuro) para os mesmos componentes abstratos (ex: Janela, Botão) sem modificar o código do componente. Qual padrão estrutural desacopla uma abstração de sua implementação, permitindo que ambos variem independentemente?",
+                options: [
+                    "Facade",
+                    "Adapter",
+                    "Bridge",
+                    "Decorator"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Bridge (Ponte) é usado para desacoplar uma abstração de sua implementação, permitindo que ambos evoluam independentemente. No exemplo de interface gráfica, a 'Janela' é a abstração, e sua 'aparência' (implementação de renderização para tema claro/escuro) pode mudar sem afetar a classe Janela em si."
+            },
+            {
+                question: "Um sistema de processamento de requisições permite que uma requisição seja passada por uma cadeia de objetos. Cada objeto na cadeia decide se processa a requisição ou a passa para o próximo, sem que o remetente precise conhecer o receptor específico. Qual padrão comportamental é descrito?",
+                options: [
+                    "Command",
+                    "Observer",
+                    "Chain of Responsibility",
+                    "Mediator"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Chain of Responsibility evita acoplar o remetente de uma requisição ao seu receptor, dando a mais de um objeto a chance de tratar a requisição. Ele encadeia os objetos receptores e passa a requisição ao longo da cadeia até que um objeto a trate."
+            },
+            {
+                question: "Para implementar um recurso de 'desfazer/refazer' em um aplicativo, onde operações específicas (ex: desenhar, mover) precisam ser encapsuladas e armazenadas para execução posterior ou reversão, qual padrão comportamental encapsula uma requisição como um objeto?",
+                options: [
+                    "Strategy",
+                    "Command",
+                    "State",
+                    "Memento"
+                ],
+                correctAnswer: 1,
+                justification: "O padrão Command (Comando) encapsula uma requisição como um objeto, parametrizando clientes com diferentes requisições, enfileirando requisições, registrando-as (logging) e suportando operações reversíveis. Isso é fundamental para a funcionalidade de 'desfazer/refazer'."
+            },
+            {
+                question: "Um objeto 'Coleção' armazena uma lista de elementos, mas você deseja permitir o acesso sequencial a esses elementos sem expor a representação interna (lista, array, etc.) do objeto. Qual padrão comportamental provê uma maneira de fazer isso?",
+                options: [
+                    "Visitor",
+                    "Mediator",
+                    "Iterator",
+                    "Template Method"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Iterator (Iterador) provê uma maneira de acessar os elementos de um objeto agregado sequencialmente sem expor sua representação interna. Isso permite que diferentes algoritmos de travessia sejam aplicados a coleções, e que a estrutura interna da coleção possa mudar sem afetar o código que a percorre."
+            },
+            {
+                question: "Em um sistema de comunicação complexo onde múltiplos objetos interagem e se referem uns aos outros, criando um acoplamento alto e dificultando a manutenção, qual padrão comportamental define um objeto que encapsula como um conjunto de objetos interage, promovendo acoplamento fraco?",
+                options: [
+                    "Observer",
+                    "Mediator",
+                    "Chain of Responsibility",
+                    "Command"
+                ],
+                correctAnswer: 1,
+                justification: "O padrão Mediator (Mediador) define um objeto que encapsula como um conjunto de objetos interage. Ele promove o acoplamento fraco ao impedir que os objetos se refiram explicitamente uns aos outros, o que simplifica o sistema e facilita a modificação individual de objetos ou suas interações."
+            },
+            {
+                question: "Para implementar um sistema de notícias onde múltiplos assinantes precisam ser notificados automaticamente sempre que uma nova matéria é publicada. Qual padrão comportamental define uma dependência um-para-muitos, onde a mudança de estado de um objeto notifica todos os seus dependentes?",
+                options: [
+                    "Mediator",
+                    "Strategy",
+                    "Observer",
+                    "State"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Observer (Observador) define uma dependência um-para-muitos entre objetos, de modo que quando um objeto (o sujeito) muda de estado, todos os seus dependentes (os observadores) são notificados e atualizados automaticamente. É amplamente usado em sistemas de eventos e interfaces gráficas."
+            },
+            {
+                question: "Um objeto 'Documento' pode estar em diferentes estados (ex: 'rascunho', 'revisão', 'publicado'). O comportamento do método 'salvar()' do documento muda drasticamente dependendo de seu estado atual. Qual padrão comportamental permite a um objeto alterar seu comportamento quando seu estado interno muda?",
+                options: [
+                    "Strategy",
+                    "Template Method",
+                    "State",
+                    "Visitor"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão State (Estado) permite que um objeto altere seu comportamento aparente quando seu estado interno muda, de modo que o objeto parece mudar sua classe. É usado quando o comportamento de um objeto depende de seu estado, e o código se tornaria complexo com muitas condicionais aninhadas (if/else ou switch/case) para lidar com os diferentes estados."
+            },
+            {
+                question: "Um algoritmo de cálculo de frete pode ter diferentes implementações (ex: frete expresso, frete econômico, frete por peso). Você deseja que um cliente possa escolher dinamicamente qual algoritmo usar sem alterar o código do cliente. Qual padrão comportamental define uma família de algoritmos, encapsula cada um e os torna intercambiáveis?",
+                options: [
+                    "State",
+                    "Command",
+                    "Strategy",
+                    "Chain of Responsibility"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Strategy (Estratégia) define uma família de algoritmos, encapsula cada um e os torna intercambiáveis. Ele permite que o algoritmo varie independentemente dos clientes que o utilizam, promovendo flexibilidade e a capacidade de trocar algoritmos em tempo de execução."
+            },
+            {
+                question: "Um algoritmo tem um esqueleto fixo de passos, mas alguns passos podem ter implementações diferentes em subclasses. Qual padrão comportamental define o esqueleto de um algoritmo em uma operação, delegando alguns passos para subclasses?",
+                options: [
+                    "Strategy",
+                    "Template Method",
+                    "Command",
+                    "State"
+                ],
+                correctAnswer: 1,
+                justification: "O padrão Template Method (Método Modelo) define o esqueleto de um algoritmo em uma operação, deixando alguns passos para serem implementados por subclasses. Ele permite que as subclasses redefinam certas partes do algoritmo sem alterar sua estrutura geral."
+            },
+            {
+                question: "Você tem uma estrutura de objetos complexa (ex: um AST - Abstract Syntax Tree) e deseja adicionar novas operações a esses objetos (ex: validação, otimização, geração de código) sem modificar as classes dos objetos existentes. Qual padrão comportamental representa uma operação a ser realizada sobre os elementos de uma estrutura de objetos, permitindo adicionar novas operações sem mudar as classes dos elementos?",
+                options: [
+                    "Iterator",
+                    "Mediator",
+                    "Visitor",
+                    "Observer"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Visitor (Visitante) representa uma operação a ser realizada sobre os elementos de uma estrutura de objetos. Ele permite que você defina uma nova operação sem alterar as classes dos elementos sobre os quais a operação é realizada. É útil quando você tem uma estrutura de objetos estável, mas as operações que você deseja realizar sobre eles mudam ou são adicionadas com frequência."
+            },
+            {
+                question: "Para implementar um sistema de 'pontos de restauração' para um objeto, permitindo que seu estado interno seja capturado e restaurado posteriormente sem violar o encapsulamento, qual padrão comportamental seria utilizado?",
+                options: [
+                    "Command",
+                    "State",
+                    "Memento",
+                    "Iterator"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Memento (Lembrança) captura e externaliza o estado interno de um objeto sem violar o encapsulamento, de modo que o estado possa ser restaurado posteriormente. É frequentemente usado em conjunto com o padrão Command para implementar funcionalidades de 'desfazer/refazer'."
+            },
+            {
+                question: "Um sistema de gerenciamento de estoque precisa atribuir a responsabilidade de calcular o valor total de um produto à classe que possui as informações de preço e quantidade. Qual princípio GRASP você aplicaria?",
+                options: [
+                    "Creator",
+                    "Controller",
+                    "Information Expert",
+                    "Pure Fabrication"
+                ],
+                correctAnswer: 2,
+                justification: "O princípio Information Expert (Expert em Informação) atribui a responsabilidade a quem tem a informação necessária para cumprir essa responsabilidade. Neste caso, a classe Produto (ou Item de Estoque) que conhece preço e quantidade é a 'expert' para calcular o valor total."
+            },
+            {
+                question: "Para atribuir a responsabilidade de criar uma instância de 'Pedido' à classe 'Cliente', pois 'Cliente' é quem contém os dados necessários para iniciar um pedido. Qual princípio GRASP é aplicado aqui?",
+                options: [
+                    "Information Expert",
+                    "Creator",
+                    "High Cohesion",
+                    "Low Coupling"
+                ],
+                correctAnswer: 1,
+                justification: "O princípio Creator (Criador) sugere atribuir a responsabilidade de criar uma instância de classe B à classe A se A agrega B, contém B, registra instâncias de B, usa B, ou tem os dados de inicialização de B. Se Cliente inicia ou possui informações para Pedido, ele é um bom candidato para criá-lo."
+            },
+            {
+                question: "Uma classe de utilitário agrupa funções de validação, formatação de dados, acesso a banco de dados e envio de e-mails. Qual princípio GRASP está sendo violado e qual a consequência principal?",
+                options: [
+                    "Low Coupling, resultando em dificuldade de reutilização.",
+                    "High Cohesion, resultando em uma classe difícil de entender e manter, e propensa a mudanças frequentes.",
+                    "Information Expert, resultando em responsabilidades distribuídas incorretamente.",
+                    "Controller, resultando em lógica de interface acoplada ao domínio."
+                ],
+                correctAnswer: 1,
+                justification: "O princípio High Cohesion (Alta Coesão) significa que as responsabilidades de um elemento devem ser fortemente relacionadas e focadas. Agrupar funções díspares em uma única classe viola a Alta Coesão, tornando a classe difícil de entender, reutilizar e manter, pois uma mudança em uma funcionalidade pode afetar outras não relacionadas."
+            },
+            {
+                question: "Um módulo de processamento de pagamentos depende diretamente de uma dúzia de outros módulos (bancos, gateways, logs, notificações, etc.). Se um desses módulos dependentes mudar, o módulo de pagamentos provavelmente também precisará ser alterado. Qual princípio GRASP está sendo violado e qual a consequência?",
+                options: [
+                    "High Cohesion, tornando o módulo muito complexo.",
+                    "Low Coupling, tornando o módulo difícil de reutilizar e altamente sensível a mudanças em outros módulos.",
+                    "Information Expert, pois as responsabilidades estão centralizadas.",
+                    "Controller, pois a lógica de negócio está misturada com a de interface."
+                ],
+                correctAnswer: 1,
+                justification: "Low Coupling (Baixo Acoplamento) significa que um elemento deve ter o mínimo de dependências possíveis de outros elementos. Um módulo com muitas dependências diretas viola o Baixo Acoplamento, tornando-o frágil a mudanças, difícil de testar e de reutilizar em outros contextos, pois qualquer alteração em suas dependências pode forçá-lo a mudar."
+            },
+            {
+                question: "Em uma aplicação web, uma classe recebe e processa todas as requisições HTTP de entrada, direcionando-as para os objetos de domínio apropriados. Qual princípio GRASP atribui a responsabilidade de lidar com eventos de interface de entrada do sistema?",
+                options: [
+                    "Information Expert",
+                    "Pure Fabrication",
+                    "Controller",
+                    "Polymorphism"
+                ],
+                correctAnswer: 2,
+                justification: "O princípio Controller (Controlador) atribui a responsabilidade de lidar com eventos de interface do sistema (como eventos de usuário ou mensagens do sistema) a um objeto que representa o sistema como um todo ou um caso de uso principal. Ele atua como o primeiro objeto a receber e delegar operações para outros objetos de domínio."
+            },
+            {
+                question: "Quando criar uma classe que não representa um conceito do domínio (ex: uma classe 'CalculadorDeImpostos' separada de 'Produto' e 'Pedido') para manter a coesão de outras classes e reduzir o acoplamento, qual princípio GRASP é aplicado?",
+                options: [
+                    "Information Expert",
+                    "Creator",
+                    "Pure Fabrication",
+                    "Polymorphism"
+                ],
+                correctAnswer: 2,
+                justification: "Pure Fabrication (Fábrica Pura) é a atribuição de uma responsabilidade altamente coesa a uma classe que não representa um conceito no domínio do problema. Ela é criada para manter a coesão e o acoplamento baixos de outras classes, geralmente agrupando responsabilidades de apoio que não se encaixam naturalmente em classes de domínio."
+            },
+            {
+                question: "A Injeção de Dependências (DI) é uma aplicação direta de qual princípio GRASP, e como isso impacta a testabilidade?",
+                options: [
+                    "High Cohesion; melhora a organização interna dos testes.",
+                    "Protected Variations; protege os testes de mudanças na interface.",
+                    "Indirection; facilita a substituição de dependências por mocks/stubs em testes, isolando a unidade testada.",
+                    "Polymorphism; permite o teste de diferentes comportamentos."
+                ],
+                correctAnswer: 2,
+                justification: "A Injeção de Dependências (DI) é uma forma de aplicar o princípio Indirection (Indireção). Ao introduzir um intermediário (o framework de DI) que injeta as dependências em um objeto, o acoplamento direto entre o objeto e suas dependências é reduzido. Isso é crucial para a testabilidade, pois permite que dependências reais sejam facilmente substituídas por mocks ou stubs durante os testes unitários, isolando a unidade de código que está sendo testada."
+            },
+            {
+                question: "Em um sistema onde o algoritmo de criptografia pode mudar frequentemente devido a requisitos de segurança, qual princípio GRASP você aplicaria para proteger o restante do sistema contra essas variações?",
+                options: [
+                    "Information Expert",
+                    "Low Coupling",
+                    "Protected Variations",
+                    "Controller"
+                ],
+                correctAnswer: 2,
+                justification: "Protected Variations (Variações Protegidas) é o princípio GRASP que visa proteger elementos contra variações ou instabilidades de outros elementos, criando interfaces estáveis em torno dos pontos de variação. No caso de um algoritmo de criptografia que muda frequentemente, você criaria uma interface de 'Criptografador' para que o restante do sistema dependa apenas da interface, não da implementação concreta do algoritmo, protegendo-o de futuras mudanças."
+            },
+            {
+                question: "A Programação Orientada a Aspectos (AOP) surge para resolver problemas de 'scattering' e 'tangling' de concerns. O que esses termos significam no contexto da AOP?",
+                options: [
+                    "Scattering é o espalhamento de dados; Tangling é a mistura de interfaces.",
+                    "Scattering é quando a lógica de um 'concern' (interesse) está espalhada por muitas partes do sistema; Tangling é quando a lógica de múltiplos 'concerns' está misturada em uma única unidade de código.",
+                    "Scattering é a quebra de um módulo em componentes; Tangling é a união de módulos.",
+                    "Scattering refere-se a código duplicado; Tangling refere-se a código ilegível."
+                ],
+                correctAnswer: 1,
+                justification: "Na AOP, 'scattering' (dispersão) ocorre quando a lógica de um interesse (concern), como logging ou segurança, é espalhada por múltiplas classes e métodos, tornando-a difícil de gerenciar. 'Tangling' (emaranhamento) ocorre quando a lógica de diferentes interesses (ex: funcionalidade de negócio, logging e segurança) está misturada em uma única unidade de código, dificultando a leitura, manutenção e reutilização. A AOP visa modularizar esses 'concerns' em 'aspectos' para resolver esses problemas."
+            },
+            {
+                question: "Qual padrão GoF comportamental lida com a delegação de responsabilidades através de uma cadeia de objetos, onde cada objeto tem a chance de processar ou passar a requisição?",
+                options: [
+                    "Mediator",
+                    "Observer",
+                    "Chain of Responsibility",
+                    "Strategy"
+                ],
+                correctAnswer: 2,
+                justification: "O padrão Chain of Responsibility permite que uma requisição seja passada ao longo de uma cadeia de manipuladores. Cada manipulador na cadeia decide se processa a requisição ou a passa para o próximo manipulador na cadeia."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let userAnswers = new Array(questions.length).fill(null); // To store user's selected answer index
+
+        const questionNumberElement = document.getElementById('question-number');
+        const questionTextElement = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const currentScoreElement = document.getElementById('current-score');
+        const questionArea = document.getElementById('question-area');
+        const resultArea = document.getElementById('result-area');
+        const finalScoreElement = document.getElementById('final-score');
+        const restartButton = document.getElementById('restart-button');
+        const progressBar = document.getElementById('progress-bar');
+        const justificationElement = document.getElementById('justification'); // Get the justification element
+
+        function displayQuestion() {
+            // Update progress bar
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            const questionData = questions[currentQuestionIndex];
+            questionNumberElement.textContent = `Questão ${currentQuestionIndex + 1} de ${questions.length}`;
+            questionTextElement.textContent = questionData.question;
+            optionsContainer.innerHTML = ''; // Clear previous options
+            justificationElement.style.display = 'none'; // Hide justification by default
+            justificationElement.textContent = ''; // Clear previous justification
+
+            questionData.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.classList.add('option-button');
+                button.textContent = option;
+                button.dataset.index = index; // Store the option index
+                button.onclick = () => selectOption(index);
+
+                // If user has already answered this question, show their selection and highlight correct/incorrect
+                if (userAnswers[currentQuestionIndex] !== null) {
+                    if (index === userAnswers[currentQuestionIndex]) {
+                        button.classList.add(index === questionData.correctAnswer ? 'correct' : 'incorrect');
+                    } else if (index === questionData.correctAnswer) {
+                        button.classList.add('correct'); // Show correct answer even if not selected by user
+                    }
+                    button.disabled = true; // Disable buttons after answering or navigating back
+                    // Show justification if question was already answered
+                    justificationElement.textContent = questionData.justification;
+                    justificationElement.style.display = 'block';
+                }
+
+                optionsContainer.appendChild(button);
+            });
+
+            updateNavigationButtons();
+            updateScoreDisplay();
+        }
+
+        function selectOption(selectedIndex) {
+            userAnswers[currentQuestionIndex] = selectedIndex; // Store user's selection
+
+            // Remove previous selections and apply new one
+            Array.from(optionsContainer.children).forEach((button, index) => {
+                button.classList.remove('selected', 'correct', 'incorrect');
+                button.disabled = true; // Disable all options after selection
+                if (index === selectedIndex) {
+                    button.classList.add('selected');
+                }
+            });
+
+            // Immediately check and provide feedback and show justification
+            checkAnswer();
+            updateScoreDisplay();
+
+            // Display justification
+            const questionData = questions[currentQuestionIndex];
+            justificationElement.textContent = questionData.justification;
+            justificationElement.style.display = 'block';
+        }
+
+        function checkAnswer() {
+            const questionData = questions[currentQuestionIndex];
+            const selectedAnswer = userAnswers[currentQuestionIndex];
+
+            Array.from(optionsContainer.children).forEach((button, index) => {
+                if (index === questionData.correctAnswer) {
+                    button.classList.add('correct'); // Highlight the correct answer
+                }
+                if (index === selectedAnswer && index !== questionData.correctAnswer) {
+                    button.classList.add('incorrect'); // Highlight incorrect selection
+                }
+            });
+        }
+
+        function updateScoreDisplay() {
+            // Recalculate score based on userAnswers
+            let currentCalculatedScore = 0;
+            for (let i = 0; i < questions.length; i++) {
+                if (userAnswers[i] !== null && userAnswers[i] === questions[i].correctAnswer) {
+                    currentCalculatedScore++;
+                }
+            }
+            score = currentCalculatedScore;
+            currentScoreElement.textContent = `Pontuação: ${score}`;
+        }
+
+        function updateNavigationButtons() {
+            prevButton.disabled = currentQuestionIndex === 0;
+            nextButton.textContent = currentQuestionIndex === questions.length - 1 ? 'Finalizar Quiz' : 'Próximo';
+        }
+
+        function showResults() {
+            questionArea.classList.add('hidden');
+            resultArea.classList.remove('hidden');
+            finalScoreElement.textContent = `Você acertou ${score} de ${questions.length} questões.`;
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            userAnswers.fill(null);
+            resultArea.classList.add('hidden');
+            questionArea.classList.remove('hidden');
+            displayQuestion();
+        }
+
+        // Event Listeners
+        nextButton.addEventListener('click', () => {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+            } else {
+                showResults();
+            }
+        });
+
+        prevButton.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+            }
+        });
+
+        restartButton.addEventListener('click', restartQuiz);
+
+        // Initialize quiz
+        displayQuestion();
+    </script>
+</body>
+</html>
