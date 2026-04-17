@@ -1,165 +1,122 @@
 #include <iostream>
-#include <stdlib.h> // trabalhar com nó e malloc
+#include <stdlib.h> // trabalhar com nó
 
 using namespace std;
 
-// estrutura dos nossos dados
-// agenda
+/*
+   Eu criava o nó novo e até apontava ele para o resto da lista...
+   Mas eu esquecia de avisar a própria lista que o início dela tinha mudado!
+Faltava a linha: l->inicio = novo;
+   Sem isso, a lista continuava apontando para o elemento velho e o meu 
+   nó novo ficava perdido na memória do computador. */
+
+// estrutura dos nossos dados (agenda)
 struct address {
     int chave;
     // outros campos
     char nome[30];
     char rua[30];
     char email[80];
-    // o ponteiro que liga um vagão ao outro
-    struct address *prox; 
+    struct address *prox;
 };
 
 // defino que a estrutura da agenda é um nó
 typedef struct address no;
 
-// Lista de controle (cabeça / locomotiva)
+// Lista de controle (cabeça)
 typedef struct {
-    no *inicio; // aponta para o início da lista
+    no *inicio; // aponta para o início
     int tam;    // quantidade de elementos na lista
 } LISTA;
 
-// Métodos que vamos utilizar
-// 1 - inicializar
-// 2 - inserir no início
-// 3 - inserir no final
-// 4 - imprimir
-
-// 1. inicializar
+// inicializar
 void init(LISTA *l) {
-    l->inicio = NULL; // a lista começa vazia
-    l->tam = 0;       // tamanho zero
+    l->inicio = NULL;
+    l->tam = 0;
 }
 
-// 2. inserir no início
-// passando a lista por referência e um valor
+// inserir no início passando um valor
 void insere_ini(LISTA *l, int valor){
-    // PRIMEIRA tarefa: Criar um novo nó na memória
-    // NECESSÁRIO fazer um cast para nó para o C++ entender
+    // Criar um novo nó com cast
     no *novo = (no*) malloc(sizeof(no));
     
-    // inserir a chave (o valor) no novo nó
+    // inserir a chave no novo nó
     novo->chave = valor;
     
-    // PULO DO GATO
-    // o próximo do novo aponta para quem era o início antigo da Lista
+    // o próximo do novo aponta o início da Lista
     novo->prox = l->inicio;
     
-    // ATUALIZAÇÃO CRÍTICA
-    // agora, a própria lista precisa reconhecer que o novo nó é o seu novo início
+    // [AQUI ESTAVA O ERRO - AGORA CORRIGIDO]
+    // Atualiza a lista para reconhecer o novo nó como sendo o início oficial
     l->inicio = novo; 
     
-    // atualiza a quantidade de elementos
+    // atualiza a quantidade de elemento
     l->tam++;
 }
 
-// 3. Inserir no fim
+// Inserir no fim
 void insere_fim(LISTA *l, int valor) {
-    // PRIMEIRA tarefa: Criar um novo nó
+    // Criar um novo nó
     no *novo = (no*) malloc(sizeof(no));
-    no *atual; // ponteiro auxiliar para percorrer a lista
+    no *atual;
     
     // insere o valor novo ao nó criado
     novo->chave = valor;
-    // como ele vai para o fim, o próximo dele obrigatoriamente é Nulo
+    // o próximo do novo é NULL
     novo->prox = NULL;
 
     // Verificar se a lista é vazia
     if (l->inicio == NULL){
-       l->inicio = novo; // se for vazia, o novo é o próprio início
+       l->inicio = novo; // o novo é início
     } else { // se não for vazia
-        atual = l->inicio; // começa a busca pelo início
-        
-        // precisa percorrer a lista até chegar
-        // no nó onde o próximo é Nulo (ou seja, o último vagão)
+        atual = l->inicio;
+        // enquanto houver elementos próximos na lista
         while(atual->prox != NULL){
-            atual = atual->prox; // avança para o próximo
+            atual = atual->prox;
         }
-        // chegou no último elemento! Agora engata o novo nó nele
+        // chegou no último elemento
         atual->prox = novo;
     }
     // atualiza a quantidade de elementos
     l->tam++;
 }
 
-// 4. Imprimir
 void imprime(LISTA *l) {
-    // verifica se tem algo para imprimir
-    if (l->tam == 0) {
-        cout << "A lista esta vazia.\n";
-        return;
-    }
-    
-    no *atual; // auxiliar para percorrer
-    atual = l->inicio; // começa do início
-    
+    no *atual;
+    atual = l->inicio;
     cout << "Tamanho da lista: " << l->tam << endl;
-    cout << "Elementos: ";
     
-    // enquanto houver elementos (atual for diferente de Nulo)
     while (atual != NULL){
-        cout << "[" << atual->chave << "] -> ";
-        atual = atual->prox; // pula para o próximo nó
+        // Coloquei um espaçamento " -> " para ficar mais fácil de ler na tela
+        cout << atual->chave << " -> ";
+        atual = atual->prox;
     }
-    cout << "NULL\n"; // marca visual do fim da lista
+    cout << "FIM" << endl;
 }
 
-// Função Principal e Menu
 int main()
 {
-    LISTA minhaLista; // criação da nossa lista de controle
-    int opcao;        // guarda a escolha do menu
-    int valor;        // guarda o valor digitado pelo usuário
+    LISTA minhaLista;
 
-    // iniciar a manipulação estrutural da lista
+    // 1. Inicia a lista (vazia)
     init(&minhaLista);
 
-    // Loop principal do programa (faz enquanto o usuário não digitar 0)
-    do {
-        // Exibição visual do Menu
-        cout << "\n====== MENU DA LISTA ENCADEADA ======\n";
-        cout << "1. Inserir elemento no INICIO\n";
-        cout << "2. Inserir elemento no FINAL\n";
-        cout << "3. Imprimir a lista\n";
-        cout << "0. Sair do programa\n";
-        cout << "Escolha uma opcao: ";
-        cin >> opcao; // captura a ação do usuário
+    // 2. Insere elementos usando as duas funções
+    cout << "Inserindo o numero 10 no inicio..." << endl;
+    insere_ini(&minhaLista, 10);
+    
+    cout << "Inserindo o numero 20 no inicio..." << endl;
+    insere_ini(&minhaLista, 20); // 20 empurra o 10
+    
+    cout << "Inserindo o numero 30 no final..." << endl;
+    insere_fim(&minhaLista, 30);
+    
+    cout << "Inserindo o numero 40 no final..." << endl;
+    insere_fim(&minhaLista, 40); // 40 vai pro fim de tudo
 
-        // Avalia qual opção foi escolhida
-        switch(opcao) {
-            case 1:
-                cout << "Digite o valor (chave) para o inicio: ";
-                cin >> valor;
-                insere_ini(&minhaLista, valor); // chama a função de inserir
-                cout << "[SUCESSO] Valor " << valor << " inserido no inicio!\n";
-                break;
+    // 3. Manda imprimir para provar que funcionou!
+    cout << "\n--- RESULTADO FINAL NA MEMORIA ---" << endl;
+    imprime(&minhaLista);
 
-            case 2:
-                cout << "Digite o valor (chave) para o final: ";
-                cin >> valor;
-                insere_fim(&minhaLista, valor); // chama a função de inserir
-                cout << "[SUCESSO] Valor " << valor << " inserido no final!\n";
-                break;
-
-            case 3:
-                cout << "\n--- Estado da Lista ---\n";
-                imprime(&minhaLista); // chama a função de imprimir
-                cout << "-----------------------\n";
-                break;
-
-            case 0:
-                cout << "Encerrando o programa... Ate logo!\n";
-                break;
-
-            default: // tratamento para caso o usuário digite '8', por exemplo
-                cout << "[AVISO] Opcao invalida! Tente novamente.\n";
-        }
-    } while (opcao != 0);
-
-    return 0; // encerra o código C++ com sucesso
+    return 0;
 }
